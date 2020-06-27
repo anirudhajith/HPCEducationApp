@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Parallel Processing</string>
+    <string name="video_title">Video Title</string>
+    <string name="video_transcript">Video Transcript</string>
+</resources>

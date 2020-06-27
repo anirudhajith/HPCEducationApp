@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="topicsArray">
+        <item>Barriers</item>
+        <item>Data races</item>
+        <item>Critical section</item>
+        <item>Mutual exclusion</item>
+        <item>Processes and Threads</item>
+        <item>Atomicity</item>
+        <item>Sequential consistency</item>
+        <item>Linearizability</item>
+        <item>Locks</item>
+        <item>Lock-free vs. Wait-free data structure</item>
+        <item>Forms of parallelism</item>
+        <item>Monitor</item>
+        <item>Synchronous vs. Asynchronous execution</item>
+        <item>Conditional variables</item>
+        <item>Semaphores</item>
+        <item>Coarse-grained vs. Fine-grained synchronization</item>
+        <item>Optimistic vs. Lazy synchronization</item>
+        <item>ABA problem</item>
+        <item>Sorting network</item>
+        <item>Transactions</item>
+        <item>Sleep and wakeup</item>
+        <item>Transactional memory</item>
+        <item>Memory consistency</item>
+        <item>Forks and Joins</item>
+        <item>Multicore, Many-core and Distributed processing</item>
+    </string-array>
+
+    <string-array name="videoIdArray" >
+        <item name="Barriers">cBUQRJ4PspU</item>
+        <item name="Data races">16X9nHNQfI8</item>
+    </string-array>
+
+    <string-array name="videoTranscriptsArray">
+        <item name="Barriers">
+"The fundamental idea behind parallelisation is to speed processing up by performing several tasks in parallel. However, in most non-trivial programs, different threads will need to use results of subproblems computed by other processors. They can do this by storing these intermediate results in a shared or a global memory space.
+
+However, an obvious problem arises here.
+Suppose T1 and T2 are two threads working in parallel. For the sake of argument, let us assume that T1 takes a longer time to execute than T2 does.
+Now, when T2 reaches a point in its execution where it needs to use a value computed by T1, it reads a designated location in the shared memory.
+However, if T1 hasn’t computed and written the required value into that location yet, T2 ends up with a junk value which would not be what the programmer had intended.
+
+Clearly, we need some way to guarantee that T2 only reads from memory location after T1 has written into it. In other words, we need T1 and T2 to coordinate with each other. We need some sort of synchronisation technique to fix this. In fact, the need for synchronisation is one of the most fundamental problems in parallel computing.
+One of the simplest synchronisation techniques involves using barriers. A barrier is a point in the parallel program where all threads meet before any thread moves ahead. Each thread that reaches a barrier pauses its execution and waits for all threads to reach the barrier before continuing with its execution.
+
+For example, if the instructions that T1 needs to execute are P1, P2, Barrier, P3. And the ones which T2 needs to execute are Q1, Barrier, Q2, Q3, it is possible for statements P1 and/or P2 to run in parallel with Q1 but not in parallel with Q2. Similarly, P3 can never run in parallel with Q1 but can run in parallel with Q2 and/or Q3. Assuming Q1 finishes executing before P2 does, T2 pauses its execution at the barrier until T1 finishes executing P2 and reaches the barrier too. Only then, do the threads begin to execute P3 and Q2. Every barrier can be divided into two phases. The arrival step also known as the trapping step, puts the threads arriving at the barrier into a wait state. A thread cannot continue it's execution while in the arrival step. Once all the threads have been trapped by the barrier, we enter the departure step and all the threads are released from the wait state and can resume execution.
+
+There are several algorithms that can be used for implementing these two steps. The algorithms can be classified into three categories:
+1) The linear barrier
+2) The Tree barrier
+3) The Butterfly barrier
+
+Here are some situations where the concept of barriers would arise naturally in the real world:
+1)In a classroom, the teacher has to wait until all the students have noted down what’s on the board until she can clear the board and start a new topic.
+2) During the construction of a multi-storeyed house, the construction of each pillar can be considered as a thread. We have to wait until all the pillars of the first floor are laid before we start laying out pillars of the second floor.
+
+Barriers can also be used in some unconventional ways.
+1) Timing a portion of a multi-threaded process: We know that no thread can proceed beyond a barrier until all the threads have reached it. So, we can use barriers as a start point since all the threads start running(from the barrier) in the timed code at the same time.
+2) Debugging: Debugging parallel computation becomes very difficult unless we have an idea of how far each of our threads have reached in the program. Suppose there are 2 threads T1 and T2 and that at some point of time,T1 must access a value computed by T2. If there was a bug in the code executed by T2, T1 may end up reading an incorrect value. It can be difficult to figure out the location of the bug in the parallel program. Introducing a barrier just before this value is computed by T2 can help to identify and isolate this bug."
+        </item>
+        <item name="Data races">
+"We will try to understand a data race using the three Ws: What, When, Why.
+A datarace occurs in a parallel program when multiple threads access the same memory location and at least one of those accesses is a write. It is a property of the execution of a program.
+
+A thread analyser is responsible for detecting data races during the execution of a multi-threaded program. Multiple threads of the same process share a single address space and access the same memory location. At least one of the threads’ accesses is a write. These accesses are not ordered by any forms of synchronisation operations, such as locks and condition variables.
+The order of accesses is non-deterministic when these three conditions hold. Therefore our computation results vary depending on the order of these accesses and particularly where the write accesses are placed in that order. When there is no write, the value in the address location will remain the same and regardless of when a thread accesses, the value accessed will be the same. Let us observe the execution of the two threads T1 and T2. T1 and T2 share a variable x and at least one of the accesses is a write.
+We can see here that the order of accesses is important in determining the end result. Here are two different orders for the execution of these threads.
+
+In the first execution the value of y printed is 10.
+Whereas in the second execution the value of y printed is 15.
+We have to keep in mind that the order of execution cannot be determined because the compiler and hardware strive for better performance and they can restructure the code entirely.
+
+Data Races in real life:
+Money transfer in Bank Accounts. We have to wait until we have sufficient money in our bank accounts for a transfer to be valid. Hence we have to receive the money first and then only can we send it. Here the relative order of the transfers is important.
+
+How to deal with data races:
+Data races are synchronisation bugs. Therefore data races are handled by synchronising accesses to shared memory. Various ways to synchronise are locks, atomics and barriers."
+        </item>
+    </string-array>
+</resources>
