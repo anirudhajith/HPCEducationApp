@@ -15,15 +15,14 @@ class VideoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
 
-
         var youtubePlayerView = findViewById<YouTubePlayerView>(R.id.youtubePlayerView)
         lifecycle.addObserver(youtubePlayerView)
         var videoTitleTextView = findViewById<TextView>(R.id.videoTitleTextView)
         var videoTranscriptTextView = findViewById<TextView>(R.id.videoTranscriptTextView)
         val position = intent.getIntExtra("position", 0)
-        val videoTitle = resources.getStringArray(R.array.topicsArray)[position]
-        val videoId = resources.getStringArray(R.array.videoIdArray)[position]
-        val videoTranscript = resources.getStringArray(R.array.videoTranscriptsArray)[position]
+        val videoTitle = intent.getStringExtra("title")
+        val videoId = intent.getStringExtra("videoId")
+        val videoTranscript = intent.getStringExtra("transcript")
         videoTitleTextView.setText(videoTitle)
         videoTranscriptTextView.setText((videoTranscript))
 
@@ -31,7 +30,6 @@ class VideoActivity : AppCompatActivity() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 //youTubePlayer.loadVideo(videoId, 0f)
                 youTubePlayer.loadOrCueVideo(lifecycle, videoId, 0f)
-
             }
         })
 

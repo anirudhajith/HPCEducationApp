@@ -6,10 +6,9 @@
     android:layout_height="fill_parent" >
 
     <ListView
-        android:id="@+id/topicList"
+        android:id="@+id/topicsList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:drawSelectorOnTop="false"
-        android:entries="@array/topicsArray"
         />
 </LinearLayout>
