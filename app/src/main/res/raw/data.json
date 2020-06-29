@@ -1,7 +1,162 @@
 {
   "subjects": [
     {
-      "name": "Parallel Processing",
+      "name": "High Performance Computing",
+      "content": [
+        {
+          "title": "System Calls",
+          "videoId": "7cfOMkcwX64",
+          "transcript": "So How does a process gets the operating system to do something for it ?\nA process or programs in execution when they require functionality from the operating system will\ndo so by calling function like entities known as system calls which are interfaces into the operating\nsystem for example there is one of the system call known as fork() .The effect is due to it a new\nprocess comes into existence and now there are two processes .First the original process we\nreferred to as a parent process and second the new process we will refer to as a child process. In\nfact now from this point both the parent and the child process execute the same program. They are\ntwo processes which are now associated with the execution of a single program.\n\nNow who doesn’t want priveleges??\nA process must be allowed to do sensitive operations while it is executing a system call . Special\ninstructions have been included in the Instruction Set Architecture for such purposes. They are\ncalled privileged instructions.\n\nMechanics of System Calls--\nProcessor hardware is designed to operate in at least 2 modes of execution \n1)Ordinary or user mode .The processor cannot run privileged instructions ie can only run\nordinary MIPS 1 instructions.\n2)Privileged or system mode .The processor is capable of running privileged instructions.\nSo if a program is executing inside the system call/or in operating system it will be in the system\nmode.\nNow how does my hardware knows what kind of mode the processor is in??\nThe processor status register tells the hardware what state the program is running in so if there is\nany violation of status, an error is thrown.\nSo atlast now if I write a program which makes a system call and as system calls itself contains\nprivileged instructions then in order to execute in the system call my program has to change mode\nfrom user mode to system mode and there's no other way that my program can execute the system\ncall because the system call code is basically going to contain privileged instructions.\n\nSo now how can this change of mode take place-\nWe have to do it explicitily by executing a system call which is entered using a special machine\ninstruction (e.g. MIPS 1 syscall) that switches processor mode from user to system before\ntransferring control.\nIn above example the syscall/system call function must be an ordinary function and not privileged\n\none as it must be available to user programs.\n\nNow let us take another example-\nIf we want to write a program to copy the content of one file into another then, first of all this\n\nprogram will need the names of these files. User will give these names by either typing them\nin the console or selecting them by using GUI. So our program will need to make system\ncalls to the kernel to enable it to access the input and output devices. Also our program will\nneed to display certain message if the program is successfully completed or even if it stops\nand is aborted. All these tasks require System calls.\nSome other examples of system calls\nExamples: Operations on files\ncreate(): to create a new file\nunlink(): to remove a file\nopen(): to open a file for reading and/or writing\nread(): to read data from an open file into a variable\nwrite(): to write data into an open file\nlseek(): to change the current pointer into the open file\nExamples of system calls: Operations on processes \nfork(): to create a new process \nexec(): to change the memory image of a process \nexit(): to terminate \nwait(): to make parent sleep until child terminate",
+          "valid": true
+        },
+        {
+          "title": "Virtual Memory",
+          "videoId": "_1tnoez75ws",
+          "transcript": "Imagine you are working on mechanics problems. Your desk is full of physics books, your daily\nplanner, calendar, journal and notebooks etc. Now let’s say your teacher calls you and tells you\nthat you have a test on OS architecture tomorrow. What would you do? You would take the\nphysics books and keep them in your cupboard and fill the desk with books on OS.\nSimilarly, whenever your computer doesn't have space in the physical memory it writes what it\nneeds to remember in file as virtual memory that it can access whenever there is demand.\nBy definition Virtual memory is a storage allocation scheme by which a computer can access the\nsecondary memory (hard drive, optical disks) as though it was a part of the main memory (RAM).\nIn Virtual Memory, memory addresses that a program may use are stored as virtual addresses\nthat are translated to physical addresses whenever necessary.\nSecondly, It allows us to have memory protection, because it prevents a process from accessing\nmemory that has not been allocated to it.\n\nNow lets see how virtual memory works\n\nSo when a system usually executes a program, stores or retrieves data it looks up the\ncorresponding memory address of that program. A digital computer's main memory consists of\nmany memory locations. Each memory location has a physical address which is a code.\n\n\nVirtual memory permits our program to use more pages of memory than that can fit into the RAM\nat any given time. Pages are roughly speaking blocks of data.\nInstead of preventing pages from entering the main memory, the OS swaps an unused page in\nthe main memory to make space for the new pages.\n\nAll memory references within a process are logical addresses that are dynamically translated into\nphysical addresses at run time. it is not necessary that all the pages or segments of the process\nneed to be present in the main memory during execution. This means that the required pages\nneed to be loaded into memory from virtual memory whenever required. Virtual memory is\nimplemented using Demand Paging or Demand Segmentation\n\nSo without virtual memory, program address is exactly the same as ram address\nSo here is our 32 Bit address space of the program of 4 gb\nAnd we have 30 Bit RAM in our computer of 1 gb\nSo now the OS can map these addresses just fine.\nIt can map 0 address to 0\n1 to 1\n2 to 2 etc\nBut what happens when we try to access addresses that are beyond 1 gb\nThey don’t have anywhere to map to\nSo the program is gonna crash\nWhat virtual memory does is that\nUntil the first gigabyte is filled\nIt can map to anywhere it wants within this 1 gb space\nProgram address 0 can map to RAM address 1\nSo say the next one maps up to RAM address 0\nThen the next one it maps up to RAM address 2\nWhat happens now when we access this next piece of data\nWell now the map says its not in virtual memory. Its somewhere else.\nSo a PAGE FAULT OCCURS\nPage fault is when the running program tries to access a memory location that is not yet mapped\nin virtual memory\nSo the OS searches for the required page in memory space, and say it finds it in the disk for\nexample.\nSo the program won't crash but what it will do is\nSwap the oldest page in the RAM that is the RAM address 1 in this case and put it in the disk\nAnd take the page in demand, that is the program address 3 and\nMoves it to disk. AND maps the program address 3 to RAM address 1\nSo this is called swapping\nThe pages of memory which are not currently being used are stored in the hard disk (slower\nmemory) and brought into the RAM (faster memory) whenever the program needs it.\n\nThe process of loading the page into memory on demand (whenever page fault occurs) is known\nas demand paging.\n\nBecause of virtual memory we can run programs on smaller computers (less RAM) which\ntypically would require a lot of RAM.\n\nAlthough the virtual memory will be much slower than RAM, this is a better alternative to either\noptimizing the program to use less RAM or even buying new RAM which can be very expensive.\nAnother advantage of virtual memory is multitasking, which enables simultaneous loading of\nmemory of more programs that can fit into the RAM.\nExample- Opening multiple windows in your OS. Like internet explorer and some application\nsoftware like paint. Even though both these softwares are using significant amount of memory,\nwhichever application is receiving input will reside in the main memory, the rest of the\napplications can be paged out to the secondary memory.",
+          "valid": true
+        },
+        {
+          "title": "Registers",
+          "videoId": "u1zrm8P0sgM",
+          "transcript": "The most fundamental unit of computer memory is the bit. Each of these bits is stored in a memory cell that can switch between two states 0 and 1 like a switch goes ‘on’ and ‘off’ \n\nComputers are made of devices that can flip between the states of 0 and 1. \nTraditionally we have gone from using relays,vacuum tubes to the transistors which are the most prevalent devices we use today: the essence of all these devices is that they can switch between two states. \n\nNow that we have devices that switch between two states we can construct logic gates. lets construct an ordinary OR gate and feed the output back into one of its inputs. First if both inputs are set to 0, 0 or 0 will give the output 0, say we switch input A to 1 now the output becomes 1. This will loop back into input B, such that both inputs are now 1, 1 or 1 is still 1. There is no change in the output. If you again change the input A to 0 the circuit still outputs 1. Now we have a circuit that records 1. Except that we have a problem : This change is permanent. Since the output is now 1, no matter the input there isn’t a way to change the output to zero. \n\nNow we will take an AND gate with its output looping back into its input again. If   we start with both inputs at 1, the output will be 1. 1 and 1 outputs one forever. Unless you change A to 0. Since it's an AND gate now the output will change to 0. The output will loop back to 0. Again we face the same issue as the  previous circuit. The output  now being 0, cannot change back to 1 no matter what the input. \n\nThis is called a latch because it latches onto a particular value and stays that way \n\nSince having 2 wires for input  is a bit confusing we can modify this circuit a bit such that we have a GATED LATCH. A gated latch will have a wire called DATA INPUT that we can set to 0 or 1 to input a bit and another wire WRITE ENABLE to open the latch for modification and to close the latch to store the bit. \n\nA register consists of a group of latches  with each latch capable of storing one bit of information. An n-bit register has a group of n latches and is capable of storing binary information of n-bits. The latches  hold the binary information and gates control when and how new information is transferred into a register. \n\nIn short, A processor register is a quickly accessible location available to a computer's processors. \nA register can hold an instruction, a storage address, and any type of data like a bit sequence or individual character.\n\nProcessor register is one among many data holding places such as L1 CACHE, L2 CACHE, L3 CACHE, RAM, SSD. These registers are part of the computer processor. Register memory is the smallest and fastest memory in a computer. It is not a part of the main memory and is located in the CPU.\nA register temporarily holds frequently used data, instructions, and memory address that are to be used by the CPU. They hold instructions that are currently processed by the CPU. All data is required to pass through registers before it can be processed.\n\nRegisters are normally measured by the number of bits they can hold, for example, an '8-bit register', '32-bit register' or a '64-bit register' or even more\nA register must be large enough to hold an instruction - for example, in a 64-bit computer, a register must be 64 bits in length. In some computer designs, there are smaller registers - for example, half-registers - for shorter instructions. Registers hold a small amount of data around 32 bits to 64 bits. The speed of a CPU depends on the number and size (no. of bits) of registers that are built into the CPU. \nAlmost all computers load data from a larger memory into registers where it is used for arithmetic operations and is manipulated or tested by machine instructions. Manipulated data is then often stored back into the main memory. \n\nWhen a computer program accesses the same data repeatedly, this is called locality of reference. Holding frequently used values in registers can be critical to a program's performance.\nRegisters are the essential component in computers because CPU cannot directly access data that is stored in the memory and it must be first pass through the registers. Whenever CPU gets the data or executes the instruction code, a cycle known as Fetch-Decode-Execute Instruction Cycle takes place\n\nThe computer needs processor registers (OTHERWISE KNOWN AS ACCUMULATOR) for manipulating data and an Address register for holding a memory address. The register holding the memory location of  the address of the next instruction that is to be executed when the current instruction is completed is called PROGRAM COUNTER. aN INSTRUCTION REGISTER is the register that holds the instruction currently being executed  encoded or decoded. \nIt is useful to note that Some instructions specify registers as part of the instruction. For example, an instruction may specify that the contents of two defined registers be added together and then placed in a specified register.",
+          "valid": true
+        },
+        {
+          "title": "Addressing Modes",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Types Of Instructions",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "ISA",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Floating Point Arithmetic",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "ALU",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Cache",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Locality",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Cache Replacement Policy",
+          "videoId": "u1xHbfhq0KQ",
+          "transcript": "As we all know there are various levels of memory,\n➔ Level 1 or Register :\nRegister memory is the smallest and fastest memory in a computer. Most commonly used\nregisters are accumulator, program counter, address register etc.A register temporarily holds\nfrequently used data, instructions, and memory address that are to be used by CPU.\n➔ Level 2 or Cache memory :\nIt is the fastest memory which has faster access time where data is temporarily stored for\nfaster access.\n➔ Level 3 or Main Memory :\nIt is memory on which computer works currently. It is small in size and once power is off\ndata no longer stays in this memory.\n➔ Level 4 or Secondary Memory:\nIt is external memory which is not as fast as main memory but data stays permanently in this\nmemory.\n\nWhat is cache memory ?\n\nCache Memory is a special very high-speed memory. It is used to speed up and synchronizing with high-\nspeed CPU.Cache memory is used to reduce the average time to access data from the Main memory.\n\nCache memory is costlier than main memory or disk memory but economical than CPU registers. Cache\nmemory is an extremely fast memory type that acts as a buffer between RAM and the CPU. It holds\nfrequently requested data and instructions so that they are immediately available to the CPU when\nneeded.\n\nNow let us see about the Cache Performance.\nWhen the processor needs to read or write a location in main memory, it first checks for a corresponding\nentry in the cache.\nCache hit:\nIf the processor finds that the memory location is in the cache, a cache hit has occurred and data is read\nfrom cache\n\nCache miss:\n\nIf the processor does not find the memory location in the cache, a cache miss has occurred. For a cache\nmiss, the cache allocates a new entry and copies in data from main memory, then the request is fulfilled\nfrom the contents of the cache.\n\nThe performance of cache memory is frequently measured in terms of a quantity called Hit ratio.\nHit ratio = hit / (hit + miss) = no. of hits/total accesses\n\n\nAs already discussed, during cache miss,the cache allocates a new entry and copies in data from main\nmemory but what is the case if cache is full.In that case,cache replacement algorithms specifies different\nways to evict an item from the cache.\nWhy is the optimal cache replacement policy important?\nThe performance of any high performance computing system is highly depending on the performance of\nits cache memory. It is natural to desire to keep values that would be needed in the near future and\ndiscard ones that would not. Therefore the ability to predict future patterns of such access requirements\n\nwould definitely be a desired algorithm. It ensures the lowest possible miss rate\n\nNow let us see some of the significant cache replacement policies.\n1. Bélády's algorithm\nThe most efficient caching algorithm would be to always discard the information that will not be needed\nfor the longest time in the future. This optimal result is referred to as Bélády's optimal algorithm.Since it\nis generally impossible to predict how far in the future information will be needed, this is generally not\nimplementable in practice.\n2. First in first out (FIFO)\nUsing this algorithm the cache behaves in the same way as a FIFO queue. The cache evicts the blocks in\nthe order they were added, without any regard to how often or how many times they were accessed\nbefore.\n3. Last in first out (LIFO) or First in last out (FILO)\nUsing this algorithm the cache behaves in the same way as a stack and exact opposite way as a FIFO\nqueue. The cache evicts the block added most recently first without any regard to how often or how many\ntimes it was accessed before\n4. Least recently used (LRU)\nDiscards the least recently used items first. This algorithm requires keeping track of what was used when,\nwhich is expensive if one wants to make sure the algorithm always discards the least recently used item.\n\n5. Most recently used (MRU)\nDiscards, in contrast to LRU, the most recently used items first.\n6. Time aware least recently used (TLRU)\nThe Time aware Least Recently Used (TLRU) is a variant of LRU designed for the situation where the\nstored contents in cache have a valid lifetime.\n7. Random replacement (RR)\nRandomly selects a candidate item and discards it to make space when necessary. This algorithm does not\nrequire keeping any information about the access history\n8. Least-frequently used (LFU)\nThose that are used least often are discarded first. This works very similar to LRU except that instead of\nstoring the value of how recently a block was accessed, we store the value of how many times it was\naccessed.\nThus an efficient cache replacement policy can significantly reduce the cache miss rate and hence\n\nlowering the possibility of a penalty of hundreds of cycles due to memory accesses.\nREFERENCES:\n1. https://www.geeksforgeeks.org/cache-m...\n2. https://en.wikipedia.org/wiki/Cache_(...)\n3. https://computer.howstuffworks.com/ca...",
+          "valid": true
+        },
+        {
+          "title": "Page Table",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "TLB",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Pipeline",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Hazards",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "IPC",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Process Scheduling Algorithms",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Preemption",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Priority Inversion",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Interrupts",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Profiling",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "File System",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Links",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Belady's Anomaly",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Setuid Bit",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        }
+      ]
+    },
+    {
+      "name": "Parallelization",
       "content": [
         {
           "title": "Barriers",
@@ -156,34 +311,155 @@
       ]
     },
     {
-      "name": "High Performance Computing",
-      "content": [
-        {
-          "title": "Barriers",
-          "videoId": "cBUQRJ4PspU",
-          "transcript": "",
-          "valid": false
-        },
-        {
-          "title": "Data races",
-          "videoId": "16X9nHNQfI8",
-          "transcript": "",
-          "valid": false
-        }
-      ]
-    },
-    {
       "name": "OpenMP Programming",
       "content": [
         {
-          "title": "Barriers",
-          "videoId": "cBUQRJ4PspU",
+          "title": "Parallel Region",
+          "videoId": "",
           "transcript": "",
           "valid": false
         },
         {
-          "title": "MPI Programming",
-          "videoId": "16X9nHNQfI8",
+          "title": "Parallel For",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Sections",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Reduction",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Barrier",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Master Thread",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Single",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Private Variables",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Critical Section",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Atomics",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Flush",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Asynchronous Execution (nowait)",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Ordered",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "False Sharing",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Strided Access",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Schedule",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Loop Carried Dependence",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Conditional (if)",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Data Copying (copyin, copyprivate)",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Functions",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Environment Variables",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Amdahl's Law",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Speedup",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Thread Affinity",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Directive Based Programming",
+          "videoId": "",
           "transcript": "",
           "valid": false
         }
@@ -193,14 +469,152 @@
       "name": "MPI Programming",
       "content": [
         {
-          "title": "Barriers",
-          "videoId": "cBUQRJ4PspU",
+          "title": "Distributed System",
+          "videoId": "",
           "transcript": "",
           "valid": false
         },
         {
-          "title": "Data races",
-          "videoId": "16X9nHNQfI8",
+          "title": "Point-to-Point Communication",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Broadcast",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Topology",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Send / Receive Messages",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Gather",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Reduce",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Barrier",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "BSP",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Cohesion",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Coupling",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Overlapped Communication and Computation",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Blocking and Non-blocking Communication",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Data Transfer: Serialization and Deserialization",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Communication Bandwidth",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Network Latency",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Leader Election",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Get, Put, Accumulate",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Rank",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "mpiexec / mpirun",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Persistent Communication",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Scan",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Flush and Sync",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Process Creation",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "One Sided Communication",
+          "videoId": "",
           "transcript": "",
           "valid": false
         }
@@ -210,14 +624,152 @@
       "name": "GPU Programming",
       "content": [
         {
-          "title": "Barriers",
-          "videoId": "cBUQRJ4PspU",
+          "title": "Thread Block",
+          "videoId": "",
           "transcript": "",
           "valid": false
         },
         {
-          "title": "Data races",
-          "videoId": "16X9nHNQfI8",
+          "title": "Kernel",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Warp",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Flynn's Taxonomy",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Memory Coalescing",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Thread Divergence",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Shared Memory",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Texture Memory",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Warp Voting",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Reduction",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Prefix Sum",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "PTX",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "CUDA",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "OpenCL",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Stream",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Event",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Pinned Memory",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Unified Virtual Memory",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Peer Access",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Thread Block Barrier",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Thrust Library",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Dynamic Parallelism",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Heterogeneous Programming",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "Host-Device Functions",
+          "videoId": "",
+          "transcript": "",
+          "valid": false
+        },
+        {
+          "title": "OpenACC",
+          "videoId": "",
           "transcript": "",
           "valid": false
         }

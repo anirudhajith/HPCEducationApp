@@ -32,7 +32,7 @@ class SubjectsActivity : AppCompatActivity() {
         subjectsListView.setOnItemClickListener { parent, view, position, id ->
             val clickedElement = subjectsListAdapter.getItem(position)
 
-            Toast.makeText(this, "You clicked $clickedElement", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "$clickedElement", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, TopicsActivity::class.java)
             intent.putExtra("subject_data", subjectsJsonArray.getJSONObject(position).toString())
             startActivity(intent)

@@ -35,7 +35,7 @@ class TopicsActivity : AppCompatActivity() {
             val valid = topicJsonObject.getBoolean("valid")
 
             if (valid) {
-                Toast.makeText(this, "You clicked $clickedElement", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "$clickedElement", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, VideoActivity::class.java)
                 intent.putExtra("title", title)
                 intent.putExtra("videoId", videoId)
