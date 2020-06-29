@@ -1,4 +1,4 @@
-package com.example.android.parallelprocessing
+package `in`.ac.iitm.hpceducation
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

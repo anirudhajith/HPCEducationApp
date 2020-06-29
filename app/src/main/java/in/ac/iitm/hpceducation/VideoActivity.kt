@@ -1,4 +1,4 @@
-package com.example.android.parallelprocessing
+package `in`.ac.iitm.hpceducation
 
 import android.os.Bundle
 import android.widget.TextView
