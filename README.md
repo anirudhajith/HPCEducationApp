@@ -9,3 +9,4 @@ All the data associated with the app including lists of topics, video URLs and t
 
 Since the official YouTube API for Android is famously a nightmare, we use a 3rd-party library (which works like a charm) to embed the YouTube videos: https://github.com/PierfrancescoSoffritti/android-youtube-player
 
+The apk can be found under app/release/
